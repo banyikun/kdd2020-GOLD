@@ -3,8 +3,6 @@ import math
 import networkx as nx
 
 
-
-
 def hoe_bound(i, m, n, delta, T):
     delta_p = 6 * delta / math.pi**2 / n / T**2
     return R*math.sqrt(math.log(1/delta_p)/2/m[i])
@@ -25,17 +23,16 @@ def is_neighbor(x, y, b, mean_reward, m, n, delta, T):
 def update_G(i, G, b, mean_reward, m, n, delta, T):
     neighbors = list(G[i])
     for j in neighbors:
-        if not is_neighbor(i,j, b, mean_reward, m, n, delta, T):
+        if not is_neighbor(i, j, b, mean_reward, m, n, delta, T):
             G.remove_edge(i,j)            
             
 
 
-def update(T, D, S, communities, G):
-    for com in ccommunities:
+def update(rho, T, D, S, communities):
+    for com in communities:
         if len(com)<= n*(1-rho):
             for j in com:
                 D.add(j)
-                G.remove_node(j)
                 S[j] = T
     return D
 
@@ -67,8 +64,8 @@ def Gold(Psi, epsilon, rho, delta):
             T += 1
             update_G(i, G, b, mean_reward, m, n, delta, T)
             communities = list(nx.connected_components(G))
-            D = update(T, D, S, communities, G)
-    Omega = sorted(N, key=lambda x:sus[x])
+            D = update(rho, T, D, S, communities)
+    Omega = sorted(N, key=lambda x:sus[x], reverse = True)
     return Omega
 
 
@@ -81,4 +78,3 @@ def main():
   
 if __name__== "__main__":
   main()
-
