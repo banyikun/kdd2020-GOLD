@@ -1,1 +1,1 @@
-# kdd2020-GOLD
+#GOLD
